@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://ds3vlebrunv5i"]
+
+[ext_resource type="Texture2D" uid="uid://cu1m3c81n7ic0" path="res://assets/sprites/highresBg.png" id="1_c6kkx"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_nvwei"]
+[ext_resource type="PackedScene" uid="uid://b3teb58abm3cb" path="res://scenes/bird.tscn" id="2_devgd"]
+[ext_resource type="PackedScene" uid="uid://ouucq0g80mqp" path="res://scenes/ground.tscn" id="4_n0r22"]
+[ext_resource type="PackedScene" uid="uid://cwhsg4put31cf" path="res://scenes/pipes.tscn" id="5_h5ppt"]
+[ext_resource type="PackedScene" uid="uid://kjhcwtnv46x2" path="res://scenes/game_over.tscn" id="6_tt4w8"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_nvwei")
+pipe_scene = ExtResource("5_h5ppt")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(250.247, 383.854)
+scale = Vector2(0.699452, 1.51926)
+texture = ExtResource("1_c6kkx")
+
+[node name="Bird" parent="." instance=ExtResource("2_devgd")]
+
+[node name="Ground" parent="." instance=ExtResource("4_n0r22")]
+z_index = 1
+position = Vector2(-7, -2)
+
+[node name="PipeTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 151.0
+offset_top = 84.0
+offset_right = 311.0
+offset_bottom = 139.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Score : 0"
+
+[node name="GameOver" parent="." instance=ExtResource("6_tt4w8")]
+
+[connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
+[connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
+[connection signal="restart" from="GameOver" to="." method="_on_game_over_restart"]
